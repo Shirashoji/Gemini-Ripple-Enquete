@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gemini Enquete Reviewer</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      width: 400px;
+      padding: 10px;
+    }
+    h1 {
+      font-size: 1.2em;
+    }
+    #apiKeySection, #reviewSection {
+      margin-bottom: 15px;
+    }
+    #apiKey, #reviewResult {
+      width: 95%;
+      margin-top: 5px;
+    }
+    #reviewResult {
+      height: 200px;
+      border: 1px solid #ccc;
+      padding: 5px;
+      overflow-y: auto;
+      white-space: pre-wrap; /* To respect newlines in the output */
+    }
+    button {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gemini アンケートレビュー</h1>
+
+  <div id="apiKeySection">
+    <label for="apiKey">Gemini API Key:</label>
+    <input type="password" id="apiKey" placeholder="APIキーを入力してください">
+    <button id="saveKey">保存</button>
+    <div id="status"></div>
+  </div>
+
+  
+
+  <script src="popup.js"></script>
+</body>
+</html>

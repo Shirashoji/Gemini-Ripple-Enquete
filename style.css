@@ -1,0 +1,26 @@
+
+.gemini-review-button-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns children to the end (right) */
+    align-items: center;
+    margin-top: 15px;
+}
+
+#gemini-review-btn {
+    margin-right: 10px; /* Add some space between the buttons */
+    order: 1; /* First item */
+}
+
+.btn-add {
+    order: 2; /* Second item */
+}
+
+#gemini-review-result-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    white-space: pre-wrap; /* Respects newlines and whitespace */
+    line-height: 1.6;
+}
