@@ -19,25 +19,38 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+const promptConfig = {
+  '今日の感想を書いてください': `
+    「今日の感想」では、以下の2点を明確に分けて記述することが必須です。
+    1.  **やったこと**: 具体的にどのような学習や作業を行ったか。教材の項目番号だけでなく、「Python 入門編1-1」のようにコース名も記載してください。
+    2.  **感想**: 「やったこと」に対する学び、気づき、疑問点など。
+
+    この形式で書かれていない場合は、その点を指摘し、形式に沿って書き直すように促してください。
+  `
+  // 今後、他の質問に対するプロンプトをここに追加できます。
+  // '質問テキスト': 'プロンプトの指示'
+};
+
 async function callGeminiApiForItem(question, answer, apiKey, tabId) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-  let prompt = `
+  let specificInstructions = '';
+  for (const key in promptConfig) {
+    if (question.includes(key)) {
+      specificInstructions = promptConfig[key];
+      break;
+    }
+  }
+
+  const prompt = `
     あなたはプロのプログラミングメンターです。
     プログラミングを学習している学生が、以下の質問に対して回答しました。
     この回答内容を分析し、具体的で、建設的なフィードバックを日本語で簡潔に提供してください。
     回答内容が良い場合は、その点を褒め、さらに良くするための視点を提供してください。
     回答内容に改善点がある場合は、その点を優しく指摘し、具体的な改善案や考え方のヒントを示してください。
-    `;
 
-  if (question.includes('今日の感想を書いてください')) {
-    prompt += `
-    特に「今日の感想」については、単に感想を述べるだけでなく、具体的に「やったこと」と、それに対する「感想」を分けて書くように促してください。
-    また、教材について言及する場合は、「1-1」のような項目番号だけでなく、「Python 入門編1-1」のように、どのコースのどの項目か分かるように記述することを推奨してください。
-    `;
-  }
+    ${specificInstructions}
 
-  prompt += `
     --- 
     [質問]: ${question}
     --- 
