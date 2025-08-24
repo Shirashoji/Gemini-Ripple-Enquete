@@ -52,11 +52,6 @@
                         question: question,
                         answer: answer
                     }
-                }, (response) => {
-                    if (chrome.runtime.lastError) {
-                        resultDiv.textContent = `エラー: ${chrome.runtime.lastError.message}`;
-                    }
-                    // The actual result will be sent via a separate message
                 });
             });
         });
