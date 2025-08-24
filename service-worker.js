@@ -1,5 +1,5 @@
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender) => {
   if (request.action === 'reviewItem') {
     const { question, answer } = request.payload;
     const tabId = sender.tab.id;
@@ -14,8 +14,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
       callGeminiApiForItem(question, answer, storageResult.apiKey, tabId);
     });
-
-    return true; // Indicates that the response is sent asynchronously
   }
 });
 
