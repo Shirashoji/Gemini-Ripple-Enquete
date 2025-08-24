@@ -1,3 +1,6 @@
+import { marked } from 'marked';
+import '../src/style.css';
+
 (function() {
     // Ensure the script runs only once
     if (window.hasRunGeminiReviewInjector) {
@@ -59,6 +62,10 @@
 
     // Listen for results from the service worker
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (chrome.runtime.lastError) {
+            // Context invalidated, do nothing.
+            return;
+        }
         if (message.action === 'displayItemReview') {
             // Find the correct result div to display the message
             const textareas = document.querySelectorAll('textarea');
@@ -68,15 +75,7 @@
                     const parentBlock = textarea.closest('.form-input-block');
                     const resultDiv = parentBlock.querySelector('.gemini-item-review-result');
                     if (resultDiv) {
-                        if (message.payload.error) {
-                            resultDiv.textContent = `エラー: ${message.payload.error}`;
-                        } else {
-                            if (window.marked) {
-                                resultDiv.innerHTML = marked.parse(message.payload.result);
-                            } else {
-                                resultDiv.textContent = message.payload.result;
-                            }
-                        }
+                        resultDiv.innerHTML = marked.parse(message.payload.result);
                         resultDiv.style.display = 'block';
                     }
                 }
