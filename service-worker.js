@@ -22,13 +22,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 async function callGeminiApiForItem(question, answer, apiKey, tabId) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
-  const prompt = `
+  let prompt = `
     あなたはプロのプログラミングメンターです。
     プログラミングを学習している学生が、以下の質問に対して回答しました。
     この回答内容を分析し、具体的で、建設的なフィードバックを日本語で簡潔に提供してください。
     回答内容が良い場合は、その点を褒め、さらに良くするための視点を提供してください。
     回答内容に改善点がある場合は、その点を優しく指摘し、具体的な改善案や考え方のヒントを示してください。
+    `;
 
+  if (question.includes('今日の感想を書いてください')) {
+    prompt += `
+    特に「今日の感想」については、単に感想を述べるだけでなく、具体的に「やったこと」と、それに対する「感想」を分けて書くように促してください。
+    また、教材について言及する場合は、「1-1」のような項目番号だけでなく、「Python 入門編1-1」のように、どのコースのどの項目か分かるように記述することを推奨してください。
+    `;
+  }
+
+  prompt += `
     --- 
     [質問]: ${question}
     --- 
