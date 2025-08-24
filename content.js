@@ -76,7 +76,11 @@
                         if (message.payload.error) {
                             resultDiv.textContent = `エラー: ${message.payload.error}`;
                         } else {
-                            resultDiv.textContent = message.payload.result;
+                            if (window.marked) {
+                                resultDiv.innerHTML = marked.parse(message.payload.result);
+                            } else {
+                                resultDiv.textContent = message.payload.result;
+                            }
                         }
                         resultDiv.style.display = 'block';
                     }

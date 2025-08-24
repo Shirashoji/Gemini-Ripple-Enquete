@@ -11,8 +11,14 @@
   "content_scripts": [
     {
       "matches": ["https://ripple-lms.example.com/enquete"],
-      "js": ["content.js"],
+      "js": ["node_modules/marked/lib/marked.umd.js", "content.js"],
       "css": ["style.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["node_modules/marked/lib/marked.umd.js"],
+      "matches": ["https://ripple-lms.example.com/*"]
     }
   ],
   "action": {
