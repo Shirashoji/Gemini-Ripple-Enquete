@@ -8,6 +8,15 @@ import '../src/style.css';
     }
     window.hasRunGeminiReviewInjector = true;
 
+    // Constants
+    const LABEL_TEXT_INCLUDES = '今日の感想';
+    const DEFAULT_TEXTAREA_VALUE = 'やったこと：\n\n感想：\n';
+    const REVIEW_BUTTON_TEXT = 'この項目をレビュー';
+    const EMPTY_CONTENT_MESSAGE = 'レビューする内容がありません。';
+    const LOADING_MESSAGE = 'Geminiにレビューをリクエスト中';
+    const ERROR_PREFIX = 'エラー: ';
+    const UNKNOWN_QUESTION_TEXT = '不明な質問';
+
     let loadingInterval;
 
     function initialize() {
@@ -20,11 +29,16 @@ import '../src/style.css';
             if (!textarea.id) return; // Skip textareas without an ID
 
             const label = form.querySelector(`label[for="${textarea.id}"]`);
-            const question = label ? label.innerText.trim() : '不明な質問';
+            const question = label ? label.innerText.trim() : UNKNOWN_QUESTION_TEXT;
+
+            // Add default text to the "Today's thoughts" textarea
+            if (label && label.innerText.includes(LABEL_TEXT_INCLUDES) && textarea.value === '') {
+                textarea.value = DEFAULT_TEXTAREA_VALUE;
+            }
 
             // Create elements
             const reviewButton = document.createElement('button');
-            reviewButton.textContent = 'この項目をレビュー';
+            reviewButton.textContent = REVIEW_BUTTON_TEXT;
             reviewButton.type = 'button';
             reviewButton.className = 'btn btn-sm btn-outline-secondary gemini-item-review-btn';
 
@@ -43,18 +57,18 @@ import '../src/style.css';
             reviewButton.addEventListener('click', () => {
                 const answer = textarea.value.trim();
                 if (!answer) {
-                    resultDiv.textContent = 'レビューする内容がありません。';
+                    resultDiv.textContent = EMPTY_CONTENT_MESSAGE;
                     resultDiv.style.display = 'block';
                     return;
                 }
 
                 let dots = 0;
-                resultDiv.textContent = 'Geminiにレビューをリクエスト中';
+                resultDiv.textContent = LOADING_MESSAGE;
                 resultDiv.style.display = 'block';
 
                 loadingInterval = setInterval(() => {
                     dots = (dots + 1) % 4;
-                    resultDiv.textContent = 'Geminiにレビューをリクエスト中' + '.'.repeat(dots);
+                    resultDiv.textContent = LOADING_MESSAGE + '.'.repeat(dots);
                 }, 300);
 
                 chrome.runtime.sendMessage({
@@ -89,7 +103,7 @@ import '../src/style.css';
                     const resultDiv = parentBlock.querySelector('.gemini-item-review-result');
                     if (resultDiv) {
                         if (message.payload.error) {
-                            resultDiv.textContent = `エラー: ${message.payload.error}`;
+                            resultDiv.textContent = `${ERROR_PREFIX}${message.payload.error}`;
                         } else {
                             resultDiv.innerHTML = marked.parse(message.payload.result);
                         }
