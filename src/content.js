@@ -8,6 +8,8 @@ import '../src/style.css';
     }
     window.hasRunGeminiReviewInjector = true;
 
+    let loadingInterval;
+
     function initialize() {
         const form = document.getElementById('indexForm');
         if (!form) return;
@@ -46,8 +48,14 @@ import '../src/style.css';
                     return;
                 }
 
-                resultDiv.textContent = 'Geminiにレビューをリクエスト中...';
+                let dots = 0;
+                resultDiv.textContent = 'Geminiにレビューをリクエスト中';
                 resultDiv.style.display = 'block';
+
+                loadingInterval = setInterval(() => {
+                    dots = (dots + 1) % 4;
+                    resultDiv.textContent = 'Geminiにレビューをリクエスト中' + '.'.repeat(dots);
+                }, 300);
 
                 chrome.runtime.sendMessage({
                     action: 'reviewItem',
@@ -67,6 +75,11 @@ import '../src/style.css';
             return;
         }
         if (message.action === 'displayItemReview') {
+            // Clear loading animation
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+            }
+
             // Find the correct result div to display the message
             const textareas = document.querySelectorAll('textarea');
             textareas.forEach(textarea => {
@@ -75,7 +88,11 @@ import '../src/style.css';
                     const parentBlock = textarea.closest('.form-input-block');
                     const resultDiv = parentBlock.querySelector('.gemini-item-review-result');
                     if (resultDiv) {
-                        resultDiv.innerHTML = marked.parse(message.payload.result);
+                        if (message.payload.error) {
+                            resultDiv.textContent = `エラー: ${message.payload.error}`;
+                        } else {
+                            resultDiv.innerHTML = marked.parse(message.payload.result);
+                        }
                         resultDiv.style.display = 'block';
                     }
                 }
