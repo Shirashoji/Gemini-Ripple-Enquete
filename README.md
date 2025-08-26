@@ -2,7 +2,7 @@
 
 ## 概要
 
-このChrome拡張機能は、[Ripple](https://ripple-lms.example.com/enquete)学習管理システム（LMS）のアンケートページで、[Google Gemini API](https://ai.google.dev/) を利用してアンケートの記述内容に対するフィードバックを生成します。
+このChrome拡張機能は、[Ripple](https://github.com/Yokohama-Miyazawa/Ripple)学習管理システム（LMS）のアンケートページで、[Google Gemini API](https://ai.google.dev/) を利用してアンケートの記述内容に対するフィードバックを生成します。
 
 プログラミング学習者が書いた自己評価や目標設定に対して、AIメンターとして建設的なアドバイスを提供することを目的としています。
 

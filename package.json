@@ -1,7 +1,7 @@
 {
   "name": "gemini-ripple-enquete",
   "version": "1.0.0",
-  "description": "このChrome拡張機能は、[Ripple](https://ripple-lms.example.com/enquete)学習管理システム（LMS）のアンケートページで、[Google Gemini API](https://ai.google.dev/) を利用してアンケートの記述内容に対するフィードバックを生成します。",
+  "description": "このChrome拡張機能は、[Ripple](https://github.com/Yokohama-Miyazawa/Ripple)学習管理システム（LMS）のアンケートページで、[Google Gemini API](https://ai.google.dev/) を利用してアンケートの記述内容に対するフィードバックを生成します。",
   "main": "content.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
