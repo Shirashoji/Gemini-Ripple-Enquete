@@ -22,6 +22,11 @@ import '../src/style.css';
             const label = form.querySelector(`label[for="${textarea.id}"]`);
             const question = label ? label.innerText.trim() : '不明な質問';
 
+            // Add default text to the "Today's thoughts" textarea
+            if (label && label.innerText.includes('今日の感想') && textarea.value === '') {
+                textarea.value = 'やったこと：\n\n感想：\n';
+            }
+
             // Create elements
             const reviewButton = document.createElement('button');
             reviewButton.textContent = 'この項目をレビュー';
