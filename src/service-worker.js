@@ -29,21 +29,6 @@ async function callGeminiApi(apiKey, question, answer) {
 もし目標が曖昧な場合は、より具体的な目標にするためのアドバイスをしてください。`;
   }
 
-  // Combine prompts and the user's text
-  const prompt = `${basePrompt}
-${specificInstructions}
-
-**加えて、回答の文章がより自然で分かりやすくなるように、文章の添削も行ってください。添削後の文章は、フィードバックとは明確に分けて提示してください。**`;
-
-  // Specific instructions based on the question
-  let specificInstructions = '';
-  if (question.includes('今日の感想')) {
-    specificInstructions = `
----
-# 追加の確認ルール
-このアンケート項目では、「やったこと」と「感想」の両方を記述することがルールです。
-回答にその両方が含まれているかを確認してください。もしどちらかが不足している場合は、その点を指摘してください。`;
-  }
   // NOTE: More 'else if' blocks can be added here for other questions.
 
   // Combine prompts and the user's text
