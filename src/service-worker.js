@@ -2,11 +2,29 @@ const GEMINI_API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1/models
 
 // Function to call the Gemini API
 async function callGeminiApi(apiKey, question, answer) {
-  const prompt = `あなたはプロのプログラミングメンターです。
+  // Base prompt applicable to all questions
+  const basePrompt = `あなたはプロのプログラミングメンターです。
 以下のアンケート内容は、プログラミングを学習している学生が書いたものです。
 内容を分析し、学習の進め方や考え方について、具体的で建設的なフィードバックを日本語で提供してください。
 **フィードバックは、直接的かつ簡潔に、会話的な要素や呼びかけ（例：「〇〇さん」、「学習者さん」、「お疲れ様でした」など）を含めずに行ってください。**
 特に、目標設定、課題の解決方法、自己評価の観点から、改善点や次のステップに繋がるようなアドバイスをお願いします。
+
+**加えて、回答の文章がより自然で分かりやすくなるように、文章の添削も行ってください。添削後の文章は、フィードバックとは明確に分けて提示してください。**`;
+
+  // Specific instructions based on the question
+  let specificInstructions = '';
+  if (question.includes('今日の感想')) {
+    specificInstructions = `
+---
+# 追加の確認ルール
+このアンケート項目では、「やったこと」と「感想」の両方を記述することがルールです。
+回答にその両方が含まれているかを確認してください。もしどちらかが不足している場合は、その点を指摘してください。`;
+  }
+  // NOTE: More 'else if' blocks can be added here for other questions.
+
+  // Combine prompts and the user's text
+  const prompt = `${basePrompt}
+${specificInstructions}
 
 ---
 
